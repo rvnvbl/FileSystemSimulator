@@ -59,17 +59,29 @@ class FileSystem:
             for child in node.children:
                 self.print_structure(child, indent + 1)
 
+    def prompt(self):
+        """Allow the user to input commands and execute them."""
+        while True:
+            user_input = input(f"{self.current_directory.node_name} > ").strip()
+            if user_input.lower() == 'exit':
+                print("Exiting the FileSystem Simulator.")
+                break
 
-# Testing the file system
+            command_parts = user_input.split()
+            command = command_parts[0].lower()
+
+            if command == 'ls':
+                self.ls()
+            elif command == 'mkdir' and len(command_parts) > 1:
+                self.mkdir(command_parts[1])
+            elif command == 'touch' and len(command_parts) > 1:
+                self.touch(command_parts[1])
+            elif command == 'cd' and len(command_parts) > 1:
+                self.cd(command_parts[1])
+            else:
+                print("Invalid command or missing argument.")
+
+# Testing the file system with interactive prompt
 if __name__ == "__main__":
     fs = FileSystem()
-
-    # Simulating commands
-    fs.ls()  # List root contents
-    fs.mkdir('dir1')  # Create directory 'dir1'
-    fs.touch('file1.txt')  # Create file 'file1.txt'
-    fs.ls()  # List root contents again
-    fs.cd('dir1')  # Change to 'dir1'
-    fs.ls()  # List 'dir1' contents
-    fs.cd('..')  # Go back to root directory
-    fs.ls()  # List root contents after cd to root
+    fs.prompt()  # Start the command prompt
